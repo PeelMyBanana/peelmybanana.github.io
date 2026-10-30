@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WordMaster: Word Duel</title>
+<meta name="description" content="Change one letter, beat the clock, learn new words. A comic-book word duel for Android.">
+<meta property="og:title" content="WordMaster: Word Duel">
+<meta property="og:description" content="Change one letter, beat the clock, learn new words. A comic-book word duel for Android.">
+<meta property="og:image" content="img/share.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="img/favicon.png">
+<style>
+@font-face { font-family: "Bangers"; src: url("fonts/Bangers-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "Baloo"; src: url("fonts/Baloo2-wght.ttf") format("truetype"); font-weight: 400 800; font-display: swap; }
+:root {
+  --yellow: #ffd94a; --cream: #fff6d6; --ink: #111; --red: #ef4136; --blue: #2f6fe8; --white: #fff;
+  --dots: radial-gradient(#e9b92a 1.6px, transparent 1.7px);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; font-family: "Baloo", system-ui, sans-serif; color: var(--ink); background: var(--yellow); background-image: var(--dots); background-size: 18px 18px; line-height: 1.5; }
+a { color: var(--blue); }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+h1, h2, .bang { font-family: "Bangers", Impact, sans-serif; letter-spacing: .02em; font-weight: 400; }
+.panel { background: var(--white); border: 4px solid var(--ink); border-radius: 18px; box-shadow: 7px 7px 0 var(--ink); }
+.btn { display: inline-block; font-family: "Bangers", Impact, sans-serif; font-size: 1.6rem; letter-spacing: .04em; text-decoration: none; color: var(--white); background: var(--red); border: 4px solid var(--ink); border-radius: 14px; box-shadow: 5px 5px 0 var(--ink); padding: .35em 1em; transition: transform .1s, box-shadow .1s; }
+.btn:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--ink); }
+.btn.blue { background: var(--blue); }
+.btn.white { background: var(--white); color: var(--ink); }
+
+header { padding: 18px 0; }
+header .wrap { display: flex; align-items: center; gap: 12px; }
+header img { width: 44px; height: 44px; border-radius: 10px; border: 3px solid var(--ink); }
+header .name { font-family: "Bangers", Impact, sans-serif; font-size: 1.7rem; }
+header nav { margin-left: auto; display: flex; gap: 18px; font-weight: 700; }
+header nav a { color: var(--ink); text-decoration: none; }
+
+.hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 32px; align-items: center; padding: 24px 0 56px; }
+.hero h1 { font-size: clamp(3.2rem, 9vw, 6.2rem); line-height: .9; margin: 0; color: var(--white); -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill; text-shadow: 6px 6px 0 var(--ink); }
+.tag { display: inline-block; margin: 14px 0 8px; font-family: "Bangers", Impact, sans-serif; font-size: 1.6rem; color: var(--white); background: var(--red); border: 4px solid var(--ink); border-radius: 12px; padding: 0 .5em; transform: rotate(-3deg); box-shadow: 4px 4px 0 var(--ink); }
+.hero p.lead { font-size: 1.3rem; font-weight: 700; max-width: 32em; }
+.tiles { display: flex; gap: 10px; margin: 18px 0 26px; }
+.tile { width: 64px; height: 72px; display: grid; place-items: center; font-family: "Bangers", Impact, sans-serif; font-size: 2.4rem; background: var(--cream); border: 4px solid var(--ink); border-radius: 12px; box-shadow: 4px 4px 0 var(--ink); }
+.tile.hot { background: var(--red); color: var(--white); transform: rotate(-5deg); animation: slam 2.4s infinite; }
+@keyframes slam { 0%, 70% { transform: rotate(-5deg) scale(1); } 76% { transform: rotate(-8deg) scale(1.18); } 84%, 100% { transform: rotate(-5deg) scale(1); } }
+@media (prefers-reduced-motion: reduce) { .tile.hot { animation: none; } }
+.cta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.cta small { font-weight: 700; display: block; width: 100%; }
+.phone { justify-self: center; width: min(320px, 80vw); border: 6px solid var(--ink); border-radius: 30px; overflow: hidden; box-shadow: 10px 10px 0 var(--ink); transform: rotate(2deg); background: var(--ink); }
+.phone img { display: block; width: 100%; }
+
+section { padding: 40px 0; }
+section h2 { font-size: clamp(2.2rem, 6vw, 3.4rem); margin: 0 0 18px; text-align: center; }
+.how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.how .panel { padding: 22px; }
+.how .num { font-family: "Bangers", Impact, sans-serif; font-size: 2.2rem; width: 54px; height: 54px; display: grid; place-items: center; border-radius: 50%; color: var(--white); background: var(--blue); border: 4px solid var(--ink); margin-bottom: 8px; }
+.how h3 { margin: 4px 0; font-size: 1.3rem; }
+.how p { margin: 0; }
+
+.shots { display: flex; gap: 22px; overflow-x: auto; padding: 8px 8px 22px; scroll-snap-type: x mandatory; }
+.shots figure { flex: 0 0 auto; width: 230px; margin: 0; scroll-snap-align: center; }
+.shots img { width: 100%; display: block; border: 4px solid var(--ink); border-radius: 18px; box-shadow: 6px 6px 0 var(--ink); }
+.shots figcaption { text-align: center; font-weight: 800; margin-top: 10px; }
+
+.features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+.features .panel { padding: 22px 24px; }
+.features h3 { font-family: "Bangers", Impact, sans-serif; font-weight: 400; font-size: 1.8rem; margin: 0 0 6px; }
+.features ul { margin: 0; padding-left: 1.2em; }
+
+.join { padding: 30px; text-align: center; background: var(--cream); }
+.join ol { text-align: left; max-width: 34em; margin: 14px auto 22px; font-size: 1.1rem; }
+.join .note { font-weight: 700; }
+
+footer { padding: 30px 0 40px; text-align: center; font-weight: 700; }
+footer a { color: var(--ink); }
+
+@media (max-width: 780px) {
+  header nav { display: none; }
+  .hero { grid-template-columns: 1fr; padding-top: 6px; }
+  .phone { transform: none; }
+  .how, .features { grid-template-columns: 1fr; }
+  .tile { width: 54px; height: 62px; font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <img src="img/icon.png" alt="">
+    <span class="name">WordMaster</span>
+    <nav><a href="#how">How it plays</a><a href="#features">Features</a><a href="#join">Get the game</a></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <div>
+      <h1>WordMaster</h1>
+      <span class="tag">Word Duel</span>
+      <p class="lead">Change one letter. Beat the clock. Win the duel! A fast comic-book word game that teaches you a new word every match.</p>
+      <div class="tiles" aria-label="CARD"><span class="tile">C</span><span class="tile hot">A</span><span class="tile">R</span><span class="tile">D</span></div>
+      <div class="cta">
+        <!-- LAUNCH: replace this button with the Google Play badge and link once the game is public. -->
+        <a class="btn" href="#join">Join the free test</a>
+        <a class="btn white" href="#how">How it plays</a>
+        <small>Free on Android · Works offline · No account needed</small>
+      </div>
+    </div>
+    <div class="phone"><img src="img/combo.jpg" alt="A WordMaster match: the player builds an ON FIRE combo while changing CATS one letter at a time"></div>
+  </div>
+
+  <section id="how">
+    <h2>How it plays</h2>
+    <div class="how">
+      <div class="panel"><div class="num">1</div><h3>Change one letter</h3><p>You and your rival share one word. Swap a letter to make a new real word: COLD → CORD → CARD.</p></div>
+      <div class="panel"><div class="num">2</div><h3>Be quick</h3><p>Faster answers earn more energy. Build combos, set traps, and first to 120 wins.</p></div>
+      <div class="panel"><div class="num">3</div><h3>K.O. or Dead End</h3><p>Leave your rival with no move and you win on the spot. Then learn what every word means.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>See it in action</h2>
+    <div class="shots">
+      <figure><img src="img/duel.jpg" alt="Your turn against the bot" loading="lazy"><figcaption>Duel the bot</figcaption></figure>
+      <figure><img src="img/ko.jpg" alt="A K.O. finish" loading="lazy"><figcaption>Finish with a K.O.!</figcaption></figure>
+      <figure><img src="img/meaning.jpg" alt="The meaning of BATE" loading="lazy"><figcaption>Tap any word for its meaning</figcaption></figure>
+      <figure><img src="img/words.jpg" alt="The words page with a quiz" loading="lazy"><figcaption>Learn the words you missed</figcaption></figure>
+      <figure><img src="img/two-phones.jpg" alt="Two phones over Wi-Fi" loading="lazy"><figcaption>Play a friend on two phones</figcaption></figure>
+      <figure><img src="img/night.jpg" alt="The Arena night theme" loading="lazy"><figcaption>Six free themes</figcaption></figure>
+      <figure><img src="img/menu.jpg" alt="The main menu with your rank" loading="lazy"><figcaption>Climb Bronze to Master</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="features">
+    <h2>Why you'll love it</h2>
+    <div class="features">
+      <div class="panel"><h3>Comic-book action</h3><ul><li>Tiles slam down with BAM!, ZAP! and POP!</li><li>Combos, ON FIRE streaks and a slow-motion K.O.</li><li>Turn the effects down any time for a calm game.</li></ul></div>
+      <div class="panel"><h3>Learn as you play</h3><ul><li>The word in play shows its meaning on the board.</li><li>Words you missed wait for you in a quick quiz.</li><li>Watch your learned-words count grow.</li></ul></div>
+      <div class="panel"><h3>Play your way</h3><ul><li>Duel a bot that grows with your rank.</li><li>Two players on one phone, side by side or pass-the-phone.</li><li>Two phones on the same Wi-Fi, no internet needed.</li></ul></div>
+      <div class="panel"><h3>Fair and family-friendly</h3><ul><li>Free, with small family-safe banners, never during a match.</li><li>Nothing to buy. No account. Works offline.</li><li>For players aged 13 and over.</li></ul></div>
+    </div>
+  </section>
+
+  <section id="join">
+    <div class="panel join">
+      <h2>Be one of the first players</h2>
+      <p>WordMaster is in its final test on Google Play. Join free and help shape the game:</p>
+      <ol>
+        <li>On your Android phone, join the <a href="https://groups.google.com/g/wordmaster-word-duel-testers">WordMaster Testers group</a> with your Google account.</li>
+        <!-- OPT-IN: replace the next item's link with the Play opt-in link once Google approves the closed test. -->
+        <li>Open the <strong>test link</strong> (posted in the group), tap <strong>Become a tester</strong>, then install from Google Play.</li>
+        <li>Play a few matches now and then, and stay in for <strong>14 days</strong>. That's all!</li>
+      </ol>
+      <a class="btn blue" href="https://groups.google.com/g/wordmaster-word-duel-testers">Join the tester group</a>
+      <p class="note">Questions or ideas? Email <a href="mailto:sk.emranksa@gmail.com">sk.emranksa@gmail.com</a></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>WordMaster: Word Duel · by XPForge Studio</p>
+  <p><a href="https://sites.google.com/view/wordmaster-privacy-xp/home">Privacy policy</a> · <a href="mailto:sk.emranksa@gmail.com">Contact</a></p>
+  <p><small>Word meanings from Open English WordNet (CC BY 4.0). Fonts: Bangers and Baloo 2 (SIL Open Font License). Google Play and the Google Play logo are trademarks of Google LLC.</small></p>
+</footer>
+</body>
+</html>
